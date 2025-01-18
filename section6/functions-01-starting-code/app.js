@@ -129,7 +129,8 @@ startGameBtn.addEventListener('click', () => {
 // const sumUp = (numbers) => {
 // const sumUp = (...numbers) => { // ... -> rest operator
 // const sumUp = (a, b, ...numbers) => { // 더 많은 매개변수를 가질 경우에는 ... 앞에 매개변수를 추가해줘야 함 (a, b, ...numbers)
-const sumUp = (resultHandler, ...numbers) => {
+// const sumUp = (resultHandler, ...numbers) => {
+const combine = (resultHandler, operation, ...numbers) => {
   const validateNumber = (number) => {
     return isNaN(number) ? 0 : number;
   };
@@ -137,31 +138,42 @@ const sumUp = (resultHandler, ...numbers) => {
   let sum = 0;
   for (const num of numbers) {
     // sum += num;
-    sum += validateNumber(num);
+    // sum += validateNumber(num);
+    if (operation === 'SUM') {
+      sum += validateNumber(num);
+    } else {
+      sum -= validateNumber(num);
+    }
   }
   // return sum; // 6(1, 5)을 뺀 나머지 numbers에 포함된 값만 출력
-  resultHandler(sum);
+  resultHandler(sum, 'The result after adding all numbers is');
 }; 
 
 // const subtractUp = function(...numbers) {
-const subtractUp = function() {
-  let subtract = 0;
-  // for (const num of numbers) {
-  for (const num of arguments) { // 옛날 방식, 사용하지 말 것
-    subtract -= num;
-  }
-  return subtract;
-};
+// const subtractUp = function(resultHandler, ...numbers) {
+//   let sum = 0;
+//   // for (const num of numbers) {
+//   for (const num of numbers) { // 옛날 방식, 사용하지 말 것
+//     sum -= num;
+//   }
+//   resultHandler(sum);
+// };
 
-const showResult = (result) => {
-  alert('The result after adding all numbers is: ' + result);
+// const showResult = (result) => {
+const showResult = (messageText, result) => {
+  // alert('The result after adding all numbers is: ' + result);
+  alert(messageText + ' ' + result);
 };
 
 // console.log(sumUp([1, 5, 10, -3, 6, 10]));
 // console.log(sumUp(1, 5, 10, -3, 6, 10));
 // console.log(sumUp(1, 5, 10, -3, 6, 'fasdas'));
-sumUp(showResult, 1, 5, 10, -3, 6, 'fasdas');
+// sumUp(showResult, 1, 5, 10, -3, 6, 'fasdas');
+combine(showResult.bind(this, 'The result after adding all numbers is:'), 'ADD', 1, 5, 10, -3, 6, 'fasdas');
 // sumUp(1, 5, 10, -3, 6, 10, 25, 88);
 // console.log(sumUp(1, 5, 10, -3, 6, 10, 25, 88));
-sumUp(showResult, 1, 5, 10, -3, 6, 10, 25, 88);
-console.log(subtractUp(1, 10, 15, 20));
+// sumUp(showResult, 1, 5, 10, -3, 6, 10, 25, 88);
+combine(showResult.bind(this, 'The result after adding all numbers is:'), 'ADD', 1, 5, 10, -3, 6, 10, 25, 88);
+// console.log(subtractUp(1, 10, 15, 20));
+// subtractUp(showResult, 1, 10, 15, 20);
+combine(showResult.bind(this, 'The result after subtracting all numbers is:'), 'SUBTRACT', 1, 10, 15, 20);
