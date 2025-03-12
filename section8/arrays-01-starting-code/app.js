@@ -119,6 +119,7 @@ prices.forEach((price, idx, prices) => {
 console.log(taxAdjustedPrices);
 */
 
+/*
 const prices = [10.99, 5.99, 3.99, 6.59];
 const tax = 0.19;
 
@@ -129,6 +130,16 @@ taxAdjustedPrices = prices.map((price, idx, prices) => {
 
 // console.log(prices, taxAdjustedPrices);
 
+// const sortedPrices = prices.sort((a, b) => {
+//   if (a > b) {
+//     return 1;
+//   } else if (a === b) {
+//     return 0;
+//   } else {
+//     return -1;
+//   }
+// }); // 오름차순
+
 const sortedPrices = prices.sort((a, b) => {
   if (a > b) {
     return 1;
@@ -137,7 +148,72 @@ const sortedPrices = prices.sort((a, b) => {
   } else {
     return -1;
   }
-}); // -1, 0, 1로 작성하면 내림차순
+}); // 내림차순
 
-// console.log(sortedPrices);
-console.log(sortedPrices.reverse());
+console.log(sortedPrices);
+// console.log(sortedPrices.reverse());
+
+// const filteredArray = prices.filter((price, index, prices) => {
+//   return price > 6;
+// });
+
+const filteredArray = prices.filter(price => price > 6);
+
+console.log(filteredArray);
+
+// let sum = 0;
+
+// prices.forEach((price) => {
+//   sum += price
+// });
+
+// console.log(sum);
+
+// const sum = prices.reduce((prevValue, curValue, curIndex, prices) => {
+//   return prevValue+ curValue;
+// }, 0);
+
+const sum = prices.reduce((prevValue, curValue) => prevValue+ curValue, 0);
+
+console.log(sum);
+
+const data = 'new york;10.99;2000';
+
+const transformedData = data.split(';');
+transformedData[1] = +transformedData[1]; // 숫자형 형 변환
+console.log(transformedData);
+
+const nameFragments = ['Max', 'Schwarz'];
+const name = nameFragments.join(' ');
+console.log(name);
+
+const copiedNameFragments = [...nameFragments]; // ... -> rest 연산자와 기능 비슷
+nameFragments.push('Mr');
+console.log(nameFragments, copiedNameFragments);
+
+// console.log(Math.min(1, 5, -3));
+// console.log(Math.min(prices)); // NaN -> 숫자가 아닌 배열을 전달했기 때문
+console.log(Math.min(...prices)); // ... -> 배열의 개별 값을 꺼내 리스트로 만듦
+
+const persons = [{name: 'Max', age: 30}, {name: 'Manuel', age: 31}];
+// const copiedPersons = [...persons];
+const copiedPersons = [...persons.map(person => ({
+  name: person.name, 
+  age: person.age
+}))]; // ({}) 함수로 처리되지 않고 객체로 처리됨됨
+
+persons.push({name: 'Anna', age: 29});
+persons[0].age = 31;
+
+console.log(persons, copiedPersons);
+*/
+
+// const nameData = ['Max', 'Schwarz'];
+const nameData = ['Max', 'Schwarz', 'Mr', 30];
+// const firstName = nameData[0];
+// const lastName = nameData[1];
+
+// const [firstName, lastName] = nameData;
+const [firstName, lastName, ...otherInformation] = nameData;
+console.log(firstName, lastName);
+console.log(firstName, lastName, otherInformation);
