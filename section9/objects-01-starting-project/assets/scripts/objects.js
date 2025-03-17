@@ -57,9 +57,10 @@ const searchBtn = document.getElementById('search-btn');
 
 const movies = [];
 
-const renderMovies = () => {
+// const renderMovies = () => {
+const renderMovies = (filter = '') => {
   const movieList = document.getElementById('movie-list');
-  
+
   if (movies.length === 0) {
     movieList.classList.remove('visible');
     return;
@@ -68,9 +69,21 @@ const renderMovies = () => {
   }
   movieList.innerHTML = '';
 
-  movies.forEach((movie) => {
+  const filteredMovies = !filter
+    ? movies
+    : movies.filter((movie) => movie.info.title.includes(filter));
+
+  // movies.forEach((movie) => {
+  filteredMovies.forEach((movie) => {
     const movieEl = document.createElement('li');
-    movieEl.textContent = movie.info.title;
+    // movieEl.textContent = movie.info.title + ' - ' + movie.info[extraName];
+    let text = movie.info.title + ' - ';
+    for (const key in movie.info) {
+      if (key !== 'title') {
+        text = text + `${key}: ${movie.info[key]}`;
+      }
+    }
+    movieEl.textContent = text;
     movieList.append(movieEl);
   });
 };
@@ -91,9 +104,9 @@ const addMovieHandler = () => {
   const newMovie = {
     info: {
       title,
-      [extraName]: extraValue
+      [extraName]: extraValue,
     },
-    id: Math.random()
+    id: Math.random().toString()
   };
 
   movies.push(newMovie);
@@ -101,4 +114,10 @@ const addMovieHandler = () => {
   renderMovies();
 };
 
+const searchMovieHandler = () => {
+  const filterTerm = document.getElementById('filter-title').value;
+  renderMovies(filterTerm);
+};
+
 addMovieBtn.addEventListener('click', addMovieHandler);
+searchBtn.addEventListener('click', searchMovieHandler);
