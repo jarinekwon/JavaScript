@@ -76,11 +76,23 @@ const renderMovies = (filter = '') => {
   // movies.forEach((movie) => {
   filteredMovies.forEach((movie) => {
     const movieEl = document.createElement('li');
+    const {info, ...otherProps} = movie;
+    console.log(otherProps);
+    // const {title} = info;
+    // const {title: movieTitle} = info;
+    // const {getFormattedTitle} = movie;
     // movieEl.textContent = movie.info.title + ' - ' + movie.info[extraName];
-    let text = movie.info.title + ' - ';
-    for (const key in movie.info) {
+    // let text = movie.info.title + ' - ';
+    // let text = info.title + ' - ';
+    // let text = title + ' - ';
+    // let text = movieTitle + ' - ';
+    // let text = getFormattedTitle() + ' - ';
+    let text = movie.getFormattedTitle() + ' - ';
+    // for (const key in movie.info) {
+    for (const key in info) {
       if (key !== 'title') {
-        text = text + `${key}: ${movie.info[key]}`;
+        // text = text + `${key}: ${movie.info[key]}`;
+        text = text + `${key}: ${info[key]}`;
       }
     }
     movieEl.textContent = text;
@@ -106,7 +118,11 @@ const addMovieHandler = () => {
       title,
       [extraName]: extraValue,
     },
-    id: Math.random().toString()
+    id: Math.random().toString(),
+    // getFormattedTitle: function() {
+    getFormattedTitle() {
+      return this.info.title.toUpperCase();
+    }
   };
 
   movies.push(newMovie);
