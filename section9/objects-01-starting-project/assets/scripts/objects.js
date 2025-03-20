@@ -52,6 +52,7 @@ console.log(person['1.5']); // 자바스크립트에서 1.5를 문자열로 강�
 console.log(person);
 */
 
+"use strict"
 const addMovieBtn = document.getElementById('add-movie-btn');
 const searchBtn = document.getElementById('search-btn');
 
@@ -81,16 +82,21 @@ const renderMovies = (filter = '') => {
     // const {title} = info;
     // const {title: movieTitle} = info;
     // const {getFormattedTitle} = movie;
+    let {getFormattedTitle} = movie;
     // movieEl.textContent = movie.info.title + ' - ' + movie.info[extraName];
     // let text = movie.info.title + ' - ';
     // let text = info.title + ' - ';
     // let text = title + ' - ';
     // let text = movieTitle + ' - ';
     // let text = getFormattedTitle() + ' - ';
-    let text = movie.getFormattedTitle() + ' - ';
+    // let text = movie.getFormattedTitle() + ' - ';
+    // getFormattedTitle = getFormattedTitle.bind(movie);
+    // let text = getFormattedTitle() + ' - ';
+    // let text = getFormattedTitle.call(movie) + ' - '; // 쉼표로 구분된 목록으로 추가 인자를 전달 call( , , , )
+    let text = getFormattedTitle.apply(movie) + ' - '; // 배열로서 추가 인자 전달 apply( , [])
     // for (const key in movie.info) {
     for (const key in info) {
-      if (key !== 'title') {
+      if (key !== 'title' && key !== '_title') {
         // text = text + `${key}: ${movie.info[key]}`;
         text = text + `${key}: ${info[key]}`;
       }
@@ -115,22 +121,39 @@ const addMovieHandler = () => {
 
   const newMovie = {
     info: {
-      title,
+      // title,
+      set title(val) {
+        if (val.trim() === '') {
+          this._title = 'DEFAULT';
+          return;
+        }
+        this._title = val;
+      },
+      get title() {
+        return this._title;
+      },
       [extraName]: extraValue,
     },
     id: Math.random().toString(),
     // getFormattedTitle: function() {
     getFormattedTitle() {
+    // getFormattedTitle: () => { // 오류(화살표 함수에는 this가 어느 것에도 바인딩 되지 않아서)
+      console.log(this);
       return this.info.title.toUpperCase();
     }
   };
+
+  newMovie.info.title = title;
+  console.log(newMovie.info.title);
 
   movies.push(newMovie);
   // console.log(newMovie);
   renderMovies();
 };
 
-const searchMovieHandler = () => {
+const searchMovieHandler = () => { // window를 나타냄(화살표 함수에는 this가 어느 것에도 바인딩 되지 않아서)
+// const searchMovieHandler = function() { // 이 이벤트를 트리거하는 데에 책임이 있는 주체(요소)를 나타냄
+  console.log(this);
   const filterTerm = document.getElementById('filter-title').value;
   renderMovies(filterTerm);
 };
